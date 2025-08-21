@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <title>Calculadora de Função Quadrática</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="shortcut icon" type="image/jpg" href="maths.png"/>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+</head>
+<body>
+    <!-- Background animado -->
+    <div class="physics-bg"></div>
+    <div class="clouds">
+        <div class="cloud cloud1"></div>
+        <div class="cloud cloud2"></div>
+        <div class="cloud cloud3"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <h1 class="title">
+                <span class="icon">📈</span>
+                Calculadora Funções Polinomiais do 2º Grau e Lançamentos Oblíquos
+            </h1>
+            <div class="header-controls">
+                <button id="themeToggle" class="theme-toggle" title="Alternar tema">
+                    <span class="theme-icon">🌙</span>
+                </button>
+                <button id="physicsToggle" class="physics-toggle" title="Modo Física">
+                    <span class="physics-icon">🚀</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <div class="layout">
+                <!-- Painel de Controles -->
+                <div class="control-panel">
+                    <div class="card">
+                        <h2>Parâmetros da Função</h2>
+                        <p class="equation">f(x) = ax² + bx + c</p>
+                        
+                        <div class="parameter-group">
+                            <label for="param-a">Coeficiente a:</label>
+                            <div class="input-group">
+                                <input type="range" id="slider-a" min="-5" max="5" step="0.1" value="1" class="slider">
+                                <input type="number" id="param-a" value="1" step="0.1" class="number-input">
+                            </div>
+                        </div>
+
+                        <div class="parameter-group">
+                            <label for="param-b">Coeficiente b:</label>
+                            <div class="input-group">
+                                <input type="range" id="slider-b" min="-10" max="10" step="0.1" value="0" class="slider">
+                                <input type="number" id="param-b" value="0" step="0.1" class="number-input">
+                            </div>
+                        </div>
+
+                        <div class="parameter-group">
+                            <label for="param-c">Coeficiente c:</label>
+                            <div class="input-group">
+                                <input type="range" id="slider-c" min="-10" max="10" step="0.1" value="0" class="slider">
+                                <input type="number" id="param-c" value="0" step="0.1" class="number-input">
+                            </div>
+                        </div>
+
+                        <div class="controls">
+                            <button id="calculateBtn" class="btn btn-primary">Calcular</button>
+                            <button id="resetBtn" class="btn btn-secondary">Resetar</button>
+                            <button id="animateBtn" class="btn btn-accent">Animar</button>
+                        </div>
+
+                        <div class="customization">
+                            <h3>Personalização</h3>
+                            <div class="color-picker">
+                                <label for="curveColor">Cor da curva:</label>
+                                <input type="color" id="curveColor" value="#3b82f6">
+                            </div>
+                            <div class="style-options">
+                                <label>
+                                    <input type="checkbox" id="showGrid"> Mostrar grade
+                                </label>
+                                <label>
+                                    <input type="checkbox" id="showPoints" checked> Pontos de interesse
+                                </label>
+                                <label>
+                                    <input type="checkbox" id="showVertex" checked> Vértice
+                                </label>
+                                <label>
+                                    <input type="checkbox" id="showRoots" checked> Raízes
+                                </label>
+                                <label>
+                                    <input type="checkbox" id="autoScale" checked> Escala automática
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Decomposição da Função -->
+                    <div class="card decomposition">
+                        <h3>Decomposição da Função</h3>
+                        <div class="decomp-controls">
+                            <button id="showQuadratic" class="btn btn-small">+ ax²</button>
+                            <button id="showLinear" class="btn btn-small">+ bx</button>
+                            <button id="showConstant" class="btn btn-small">+ c</button>
+                            <button id="showAll" class="btn btn-small">Mostrar Tudo</button>
+                        </div>
+                        <div class="decomp-canvas">
+                            <canvas id="decompChart" width="300" height="200"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Área do Gráfico -->
+                <div class="graph-area">
+                    <div class="card graph-card">
+                        <div class="graph-header">
+                            <h2>Gráfico da Função</h2>
+                            <div class="graph-controls">
+                                <div class="zoom-indicator">
+                                    <span id="zoomLevel">100%</span>
+                                </div>
+                                <button id="zoomIn" class="btn btn-icon" title="Zoom In (Scroll Up)">🔍+</button>
+                                <button id="zoomOut" class="btn btn-icon" title="Zoom Out (Scroll Down)">🔍-</button>
+                                <button id="resetZoom" class="btn btn-icon" title="Reset Zoom">⌂</button>
+                            </div>
+                        </div>
+                        <div class="graph-container">
+                            <canvas id="quadraticChart"></canvas>
+                        </div>
+                        
+                        <!-- Projectile Animation -->
+                        <div id="projectile" class="projectile">🏀</div>
+                    </div>
+
+                    <!-- Resultados -->
+                    <div class="card results-card">
+                        <h3>Resultados</h3>
+                        <div class="results-grid">
+                            <div class="result-item">
+                                <span class="label">Discriminante (Δ):</span>
+                                <span id="discriminant" class="value">-</span>
+                            </div>
+                            <div class="result-item">
+                                <span class="label">Vértice:</span>
+                                <span id="vertex" class="value">-</span>
+                            </div>
+                            <div class="result-item">
+                                <span class="label">Eixo de Simetria:</span>
+                                <span id="axis" class="value">-</span>
+                            </div>
+                            <div class="result-item">
+                                <span class="label">Raízes:</span>
+                                <span id="roots" class="value">-</span>
+                            </div>
+                            <div class="result-item">
+                                <span class="label">Concavidade:</span>
+                                <span id="concavity" class="value">-</span>
+                            </div>
+                            <div class="result-item">
+                                <span class="label">Valor no Vértice:</span>
+                                <span id="vertexValue" class="value">-</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Loading Indicator -->
+    <div id="loading" class="loading hidden">
+        <div class="spinner"></div>
+        <p>Calculando...</p>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast" class="toast hidden"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
